@@ -11,8 +11,9 @@ public class MainManager : MonoBehaviour
     public Rigidbody Ball;
 
     public Text ScoreText;
+    public Text HighScoreText;
     public GameObject GameOverText;
-    
+
     private bool m_Started = false;
     private int m_Points;
     
@@ -38,6 +39,7 @@ public class MainManager : MonoBehaviour
         }
 
         AddPoint(0); // initialize score text
+        HighScoreText.text = DataManager.rankingData.Count > 0 ? $"Best Score : {DataManager.rankingData[0].playerName} : {DataManager.rankingData[0].score}" : "You are the first player!";
     }
 
     private void Update()
@@ -67,12 +69,13 @@ public class MainManager : MonoBehaviour
     void AddPoint(int point)
     {
         m_Points += point;
-        ScoreText.text = $"{DataManager.CurrentPlayerName}'s Score : {m_Points}";
+        ScoreText.text = $"{DataManager.currentPlayerName}'s Score : {m_Points}";
     }
 
     public void GameOver()
     {
         m_GameOver = true;
         GameOverText.SetActive(true);
+        DataManager.UpdateRanking(m_Points);
     }
 }
